@@ -1,13 +1,4 @@
-{
-  "name": "roblox-chatgpt-proxy",
-  "version": "1.0.0",
-  "description": "Proxy para Verity",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "openai": "^4.0.0"
+"dependencies": {
+    "express": "^4.19.2",
+    "node-fetch": "^2.7.0"
   }
-}
