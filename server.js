@@ -14,12 +14,11 @@ app.post('/v1/chat/completions', async (req, res) => {
             return res.status(500).json({ error: "Falta la configuración de la clave en el servidor." });
         }
 
-        // Extraemos los mensajes que envió Roblox de forma segura
         const mensajesRoblox = req.body.messages || [];
 
-        // Construimos el cuerpo exacto que Groq requiere, asegurando el modelo correcto
+        // Construimos el cuerpo usando un modelo 100% activo y gratuito en la API actual de Groq
         const datosParaGroq = {
-            model: "llama3-8b-8192", // Usamos este modelo que es ultra estable y 100% gratuito en Groq
+            model: "llama-3.1-8b-instant", // Modelo oficial, activo y ultra veloz
             messages: mensajesRoblox,
             temperature: req.body.temperature || 0.7
         };
@@ -36,18 +35,18 @@ app.post('/v1/chat/completions', async (req, res) => {
         const data = await response.json();
 
         if (!response.ok) {
-            console.error("Error de Groq:", data);
+            console.error("Error devuelto por la API de Groq:", data);
             return res.status(response.status).json(data);
         }
 
         res.status(200).json(data);
 
     } catch (error) {
-        console.error("Error interno en el proxy:", error);
+        console.error("Error interno en el servidor proxy:", error);
         res.status(500).json({ error: error.message });
     }
 });
 
 app.listen(PORT, () => {
-    console.log(`Proxy gratuito de Verity activo en puerto ${PORT}`);
+    console.log(`Proxy de Verity corriendo con modelo actualizado en puerto ${PORT}`);
 });
