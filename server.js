@@ -1,9 +1,13 @@
 const express = require('express');
-const fetch = require('node-fetch');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+
+// Ruta para verificar que el servidor esté vivo en internet
+app.get('/', (req, res) => {
+    res.send('El servidor proxy de Verity está vivo y funcionando correctamente.');
+});
 
 app.post('/v1/chat/completions', async (req, res) => {
     try {
@@ -16,13 +20,13 @@ app.post('/v1/chat/completions', async (req, res) => {
 
         const mensajesRoblox = req.body.messages || [];
 
-        // Construimos el cuerpo usando un modelo 100% activo y gratuito en la API actual de Groq
         const datosParaGroq = {
-            model: "llama-3.1-8b-instant", // Modelo oficial, activo y ultra veloz
+            model: "llama-3.1-8b-instant",
             messages: mensajesRoblox,
             temperature: req.body.temperature || 0.7
         };
 
+        // Usamos el fetch nativo de Node.js (Sin librerías externas propensas a romperse)
         const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
             method: 'POST',
             headers: {
@@ -48,5 +52,5 @@ app.post('/v1/chat/completions', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Proxy de Verity corriendo con modelo actualizado en puerto ${PORT}`);
+    console.log(`Proxy de Verity corriendo exitosamente en el puerto ${PORT}`);
 });
